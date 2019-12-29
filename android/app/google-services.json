@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "934737958209",
+    "firebase_url": "https://vxr-demo.firebaseio.com",
+    "project_id": "vxr-demo",
+    "storage_bucket": "vxr-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934737958209:android:c442bd13e1b43b51a8bdc0",
+        "android_client_info": {
+          "package_name": "com.vxrdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934737958209-16c5ijvl98cg88v9925hr8ot70rd5ql5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vxrdemo",
+            "certificate_hash": "6e300cbd8f11ce03b36b6929f5ca275c51dc4d5f"
+          }
+        },
+        {
+          "client_id": "934737958209-c6b5t4at5g3m7ss0jvjn7b6trvqn3jje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGZh57w33r9Gppui_6krQB-J5r0kazaXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934737958209-c6b5t4at5g3m7ss0jvjn7b6trvqn3jje.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
