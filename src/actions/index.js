@@ -1,9 +1,7 @@
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 GoogleSignin.configure({
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-    webClientId: '475129451290-3381lej6ced6r8auqh184qeb8rktsfks.apps.googleusercontent.com',
-    // 15257595534-53qfvjp4bp2ehh6vcl7ejgc8uktknojm.apps.googleusercontent.com
-    // webClientId: '613753752038-d84k0k8prh2v3tpgqh998gvvjrocgbpd.apps.googleusercontent.com',
+    // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    webClientId: '786177498507-js69bv21uitfgvnc6ba5l9p7gm15i6tg.apps.googleusercontent.com',
     offlineAccess: false,
 });
 export function signIn() {

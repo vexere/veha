@@ -9,7 +9,7 @@ import Loading from '../components/Loading'
 import { connect } from 'react-redux';
 import * as loginAction from '../actions'
 const SheetID = "1i-0Tq2Bc5lzJqoizxMeBA95dgQDSkmHLXt6eWLv94Cc";
-const API_KEY = "AIzaSyBgABiJC-GtyCIwKco5fodMBr6PHIaaajY";
+const API_KEY = "AIzaSyDMzmnG1bYziDhPlTZCUJZWcV0mSzpwX-c";
 const SheetName = "Danh%20Sách"
 class UserListScreen extends Component {
     constructor(props) {
