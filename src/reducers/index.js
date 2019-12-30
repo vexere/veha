@@ -1,25 +1,26 @@
 const initialState = {
-    phoneNumber: null,
-    total: null,
-    paymentMethod: null,
-    cardValue: 0
+    isAuthenticated: null,
+    user: null,
 }
 export default function commonReducer(state = initialState, action) {
     switch (action.type) {
-        case 'SAVE_PHONE_NUMBER':
+        case 'SIGN_IN_SUCCESS':
             return {
                 ...state,
-                phoneNumber: action.phoneNumber
+                user: action.user,
+                isAuthenticated: true
             }
-        case 'SAVE_CARD_VALUE':
+        case 'SIGN_OUT':
             return {
                 ...state,
-                cardValue: action.cardValue
+                user: null,
+                isAuthenticated: false
             }
-        case 'SAVE_METHOD':
+        case 'CHECK_SIGN_IN':
             return {
                 ...state,
-                paymentMethod: action.paymentMethod
+                user: action.user,
+                isAuthenticated: true
             }
         default:
             return state

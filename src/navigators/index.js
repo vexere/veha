@@ -4,15 +4,25 @@ import LoginScreen from '../screens/LoginScreen'
 import UserListScreen from '../screens/UserListScreen'
 import UserDetailScreen from '../screens/UserDetailScreen'
 
-const Main = createStackNavigator({
-    Login: { screen: LoginScreen },
+export const Logged = createStackNavigator({
     UserList: { screen: UserListScreen },
     UserDetail: { screen: UserDetailScreen },
 },
-{
-    headerMode: 'none',
-    initialRouteName: 'Login',
-}
+    {
+        headerMode: 'none',
+        initialRouteName: 'UserList',
+    }
 );
+export const LoggedIn =createAppContainer(Logged)
+export const Main = createSwitchNavigator({
+    Login: { screen: LoginScreen },
+    logged: Logged,
+},
+    {
+        headerMode: 'none',
+        initialRouteName: 'Login',
+    }
+);
+
 
 export default createAppContainer(Main);

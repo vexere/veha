@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { colors } from '../styles'
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import Icon from 'react-native-vector-icons/dist/Feather';
 export default class UserDetailScreen extends Component {
     constructor(props) {
         super(props);
@@ -9,38 +9,45 @@ export default class UserDetailScreen extends Component {
             info: this.props.navigation.getParam('info', null)
         };
     }
-
     render() {
-        const { info } = this.state
-        return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView>
-                    <View style={styles.header}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.btnBack}>
-                            <Icon name="address-book"   color={colors.white} />
-                        </TouchableOpacity>
-                        <Text style={styles.headerText}>User Info</Text>
-                    </View>
-                    <Icon name="arrow-left" size={25} color={colors.blue} />
-                    <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                        <View style={{ flex: 2 }}>
-                            <Text style={styles.textHead}>FullName: </Text>
-                            <Text style={styles.textHead}>Phone Number: </Text>
-                            <Text style={styles.textHead}>Email: </Text>
-                            <Text style={styles.textHead}>Team: </Text>
-                            <Text style={styles.textHead}>DOB: </Text>
+        const { info } = this.state;
+        if (info) {
+            return (
+                <SafeAreaView style={{ flex: 1 }}>
+                    <ScrollView>
+                        <View style={styles.header}>
+                            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.btnBack}>
+                                <Icon name="arrow-left" size={25} color={colors.white} />
+                            </TouchableOpacity>
+                            <Text style={styles.headerText}>User Info</Text>
                         </View>
-                        <View style={{ flex: 3}}>
-                            <Text style={styles.textDetail}>{info[4]}</Text>
-                            <Text style={styles.textDetail}>{info[7]}</Text>
-                            <Text style={styles.textDetail}>{info[8]}</Text>
-                            <Text style={styles.textDetail}>{info[3]}</Text>
-                            <Text style={styles.textDetail}>{info[10]}/{info[11]}</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                            <View style={{ flex: 2 }}>
+                                <Text style={styles.textHead}>FullName: </Text>
+                                <Text style={styles.textHead}>Main Workplace: </Text>
+                                <Text style={styles.textHead}>Team: </Text>
+                                <Text style={styles.textHead}>Role: </Text>
+                                <Text style={styles.textHead}>Phone Number: </Text>
+                                <Text style={styles.textHead}>Email: </Text>
+                                <Text style={styles.textHead}>Personal Email: </Text>
+                                <Text style={styles.textHead}>DOB: </Text>
+                            </View>
+                            <View style={{ flex: 3 }}>
+                                <Text style={styles.textDetail}>{info[4]}</Text>
+                                <Text style={styles.textDetail}>{info[2]}</Text>
+                                <Text style={styles.textDetail}>{info[3]}</Text>
+                                <Text style={styles.textDetail}>{info[5]}</Text>
+                                <Text style={styles.textDetail}>{info[7]}</Text>
+                                <Text style={styles.textDetail}>{info[8]}</Text>
+                                <Text style={styles.textDetail}>{info[9]}</Text>
+                                <Text style={styles.textDetail}>{info[10]}/{info[11]}</Text>
+                            </View>
                         </View>
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
-        );
+                    </ScrollView>
+                </SafeAreaView>
+            );
+        } else { return null }
+
     }
 }
 const styles = StyleSheet.create({
@@ -66,6 +73,6 @@ const styles = StyleSheet.create({
     btnBack: {
         position: 'absolute',
         left: 0,
-        padding: 15
+        padding: 10
     },
 })
