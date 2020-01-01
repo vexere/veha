@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {
     View, Text, TouchableOpacity,
-    StyleSheet, TextInput, SafeAreaView, FlatList
+    StyleSheet, TextInput, SafeAreaView, FlatList, Picker
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Feather';
-import { colors } from '../styles'
-import Loading from '../components/Loading'
+import { colors, dimensions } from '../styles'
+import UserItem from '../components/UserItem'
 import { connect } from 'react-redux';
 import * as loginAction from '../actions'
 const SheetID = "1i-0Tq2Bc5lzJqoizxMeBA95dgQDSkmHLXt6eWLv94Cc";
@@ -19,77 +19,40 @@ class UserListScreen extends Component {
             search: "",
             searchResult: [],
             errMessage: "",
-            refresh: false
+            refresh: false,
+            userListTab: true,
+            teamArr: [],
+            userType: 'All'
         };
     }
-    componentDidMount() {
-        this.getData()
-    }
-    getData = () => {
-        const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + SheetID + '/values/' + SheetName + '!A9:M/?key=' + API_KEY;
-        fetch(url,
-            {
-                method: 'GET',
-            })
-            .then(res => res.json())
-            .then(resJson => {
-                if (resJson.values) {
-                    this.setState({ tableData: resJson.values, errMessage: "", refresh: false })
-                } else {
-                    this.setState({ errMessage: "Can't get data", refresh: false })
-                }
-            }).catch(() => this.setState({ errMessage: "Can't get data", refresh: false }))
-    }
-    onSearch = (text) => {
-        const { tableData } = this.state;
-        this.setState({ search: text })
-        var search = new RegExp(text, 'i'); // prepare a regex object
-        let resultByName = tableData.filter(item => search.test(item[4]));
-        let resultByEmail = tableData.filter(item => search.test(item[8]));
-        let result = [...new Set([...resultByName, ...resultByEmail])];
-        this.setState({ searchResult: result })
-    }
-    onRefresh = () => {
-        this.setState({ refresh: true }, function () { this.getData() });
-    }
+
     render() {
-        const { searchResult, tableData, search, errMessage, refresh } = this.state;
-        let data = tableData
-        if (search != "") {
-            data = searchResult
-        }
+        const { data, navigation, userType, teamArr, getUserTeam, errMessage, search, refresh, onRefresh } = this.props
         return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.headerWrapper}>
-                    <Text style={styles.headerText}> VXR - Contact List </Text>
-                    <Icon style={styles.btnSignOut} name="log-out" size={22} color={colors.burntOrange} onPress={() => this.props.signOut()} />
+            <View style={{ flex: 1 }}>
+                <View style={{ marginHorizontal: 20, width: 150, borderWidth: 1, borderColor: colors.black, marginBottom: 10 }}>
+                    <Picker
+                        style={{ height: 30 }}
+                        selectedValue={userType}
+                        onValueChange={(itemValue, itemIndex) => getUserTeam(itemValue)}
+                    >
+                        <Picker.Item label="All" value="All" />
+                        {teamArr.map((item, key) => { return <Picker.Item key={key} label={item.name} value={item.name} /> })}
+                    </Picker>
                 </View>
-                <Text style={{ alignSelf: 'flex-end', padding: 10 }} >Hello {this.props.user.name}!</Text>
-                <View style={styles.inputWrapper}>
-                    <TextInput style={styles.searchInput} value={this.state.search} onChangeText={(text) => this.onSearch(text)} placeholder="Enter email or name" />
-                    <TouchableOpacity style={styles.icon} onPress={() => this.setState({ search: '', searchResult: '' })}>
-                        <Icon name={search != "" ? "x" : "search"} size={25} color={colors.burntOrange} />
-                    </TouchableOpacity>
-                </View>
+
                 {data.length === 0 && search != "" ? <Text style={{ alignSelf: 'center', padding: 20, color: colors.red }}>"{search}" not found</Text> : null}
                 {errMessage != "" ? <Text style={{ alignSelf: 'center', padding: 20, color: colors.red }}>{errMessage}</Text> : null}
                 <FlatList
                     refreshing={refresh}
-                    onRefresh={() => this.onRefresh()}
+                    onRefresh={onRefresh}
                     data={data}
-                    renderItem={({ item }) => <TouchableOpacity style={styles.itemWrapper} onPress={() => this.props.navigation.navigate('UserDetail', { info: item })} >
-                        <Icon name="user" color={colors.burntOrange} size={30} style={{ padding: 10 }} />
-                        <View style={styles.detail}>
-                            <Text>{item[4]}</Text>
-                            <Text>{item[7]}</Text>
-                            <Text>{item[8]}</Text>
-                        </View>
-                        <Icon name="chevron-right" color={colors.blue} size={30} style={{ position: 'absolute', right: 0 }} />
-                    </TouchableOpacity>}
-                    keyExtractor={(item, index) => index}
+                    renderItem={({ item }) =>
+                        <UserItem item={item} navigation={navigation} />
+                    }
+                    keyExtractor={(item, index) => index.toString()}
                 />
-
-            </SafeAreaView>
+            </View>
         );
     }
 }
@@ -154,5 +117,25 @@ const styles = StyleSheet.create({
         flex: 1,
         marginRight: 20,
         paddingLeft: 10
+    },
+    tab: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10,
+        borderBottomColor: colors.gray,
+        borderBottomWidth: 2
+    },
+    teamWrapper: {
+        backgroundColor: colors.white,
+        width: (dimensions.fullWidth - 60) / 2,
+        marginVertical: 10,
+        marginHorizontal: 10,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: colors.blue,
+        borderRadius: 15
     }
 })
