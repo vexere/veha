@@ -26,7 +26,6 @@ class HomeScreen extends Component {
             teamArr: [],
             userType: 'All',
             searchDepResult: [],
-            focus: false
         };
         this.getUserTeam = this.getUserTeam.bind(this)
     }
@@ -68,38 +67,56 @@ class HomeScreen extends Component {
             }).catch(() => this.setState({ errMessage: "Can't get data", refresh: false }))
     }
     onSearch = (text) => {
-        const { tableData, userListTab, teamArr } = this.state;
+        const { tableData, userListTab, userType } = this.state;
         this.setState({ search: text })
         var search = new RegExp(text, 'i'); // prepare a regex object
+        let resultByName = tableData.filter(item => search.test(item[4]));
+        let resultByEmail = tableData.filter(item => search.test(item[8]));
+        let result = [...new Set([...resultByName, ...resultByEmail])];
+
         if (userListTab) {
-            let resultByName = tableData.filter(item => search.test(item[4]));
-            let resultByEmail = tableData.filter(item => search.test(item[8]));
-            let result = [...new Set([...resultByName, ...resultByEmail])];
-            this.setState({ searchResult: result })
-        } else {
-            let resultByName = teamArr.filter(item => search.test(item.name));
-            console.log(resultByName)
-            this.setState({ searchDepResult: resultByName })
+            if (userType != "All") {
+                result = result.filter(item => item[3] === userType);
+            }
         }
+
+        this.setState({ searchResult: result })
+        // Search department
+        //     let resultByName = teamArr.filter(item => search.test(item.name));
+        //     console.log(resultByName)
+        //     this.setState({ searchDepResult: resultByName })
+
+
 
     }
     onRefresh = () => {
         this.setState({ refresh: true }, function () { this.getData() });
     }
     getUserTeam = (team) => {
-        const { tableData } = this.state;
+        const { tableData, search } = this.state;
         let result = tableData
+
         if (team !== "All") {
             result = tableData.filter(element => element[3] === team);
+        }
+
+        // if (team !== "All") {
+        //     result = tableData.filter(element => element[3] === team);
+        // }
+        if (search != "") {
+            var searchText = new RegExp(search, 'i'); // prepare a regex object
+            let resultByName = result.filter(item => searchText.test(item[4]));
+            let resultByEmail = result.filter(item => searchText.test(item[8]));
+            result = [...new Set([...resultByName, ...resultByEmail])];
         }
 
         this.setState({ searchResult: result, userListTab: true, userType: team })
     }
     focus = () => {
-        this.setState({ focus: true }, () => this.input.focus())
+        this.input.focus()
     }
     render() {
-        const { searchResult, tableData, search, errMessage, refresh, teamArr, userType, userListTab, searchDepResult, focus } = this.state;
+        const { searchResult, tableData, search, errMessage, refresh, teamArr, userType, userListTab, searchDepResult } = this.state;
         let data = tableData
         if (search === "") { //TH filter
             if (searchResult.length > 0) {
@@ -108,45 +125,65 @@ class HomeScreen extends Component {
         } else {
             data = searchResult
         }
+        let countEmp = tableData.length;
+        if (userListTab) {
+            if (search != "") {
+                countEmp = searchResult.length;
+            } else {
+                if (userType != "All") {
+                    countEmp = data.length
+                } else {
+                    countEmp = tableData.length
+                }
+            }
+        }
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <StatusBar backgroundColor={colors.blue} barStyle="light-content" />
                 <View style={{ backgroundColor: colors.blue }}>
-                    {focus ? <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity style={{ padding: 10 }} onPress={() => this.setState({ focus: false }, () => Keyboard.dismiss())}>
-                            <Icon name="arrow-left" size={25} color={colors.burntOrange} />
-
-                        </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={styles.inputWrapper}>
                             <TextInput ref={ref => this.input = ref}
-                                style={styles.searchInput} value={this.state.search} onChangeText={(text) => this.onSearch(text)} placeholder="Search" />
-                            <TouchableOpacity style={styles.icon} onPress={() => this.setState({ search: '', searchResult: '' })}>
+                                style={styles.searchInput} value={this.state.search} onChangeText={(text) => this.onSearch(text)} placeholder="Search by name or email" />
+                            <TouchableOpacity style={styles.icon} onPress={() => { search != "" ? this.onSearch("") : this.focus() }}>
                                 <Icon name={search != "" ? "x" : "search"} size={25} color={colors.burntOrange} />
                             </TouchableOpacity>
                         </View>
-                    </View> :
-                        <View style={{ padding: 17, justifyContent: 'space-between', flexDirection: 'row' }}>
-                            <Text  style={{ fontSize: 15, color: colors.white, fontWeight: '700' }}>VXR Contact List</Text>
-                            <View style={{flexDirection:'row'}}>
-                                <Icon style={styles.btnSignOut} name="search" size={22} color={colors.white} onPress={() => this.focus()} />
-                                <Icon style={styles.btnSignOut} name="log-out" size={22} color={colors.white} onPress={() => this.props.signOut()} />
-                            </View>
-                        </View>
-                    }
+                    </View>
+
                 </View>
                 <View style={{ flexDirection: 'row', marginHorizontal: 10, marginBottom: 10 }}>
-                    <TouchableOpacity onPress={() => this.setState({ userListTab: false })} style={[styles.tab, !userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
+                    <TouchableOpacity onPress={() => userListTab?this.setState({ userListTab: false, search: '', searchResult: [] }):null} style={[styles.tab, !userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
                         <Text style={!userListTab ? styles.activeText : {}}>Department ({teamArr.length})</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ userListTab: true }, () => this.getUserTeam('All'))} style={[styles.tab, userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
-                        <Text style={userListTab ? styles.activeText : {}}>Employee ({userType != "All" ? data.length : tableData.length})</Text>
+                    <TouchableOpacity onPress={() =>!userListTab? this.setState({ userListTab: true, search: '', searchResult: [] }, () => this.getUserTeam('All')):null} style={[styles.tab, userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
+                        <Text style={userListTab ? styles.activeText : {}}>Employee ({countEmp})</Text>
                     </TouchableOpacity>
                 </View>
-                {userListTab ? <UserListScreen onRefresh={() => this.onRefresh()} refresh={refresh} search={search} errMessage={errMessage} data={data} navigation={this.props.navigation} userType={userType} teamArr={teamArr}
-                    getUserTeam={this.getUserTeam}
-                />
-                    : <TeamListScreen data={tableData} errMessage={errMessage} onRefresh={() => this.onRefresh()} refresh={refresh} search={search} teamArr={teamArr} searchDepResult={searchDepResult} getUserTeam={this.getUserTeam} />}
+                {userListTab ?
+                    <UserListScreen
+                        onRefresh={() => this.onRefresh()}
+                        refresh={refresh}
+                        search={search}
+                        errMessage={errMessage}
+                        data={data}
+                        navigation={this.props.navigation}
+                        userType={userType}
+                        teamArr={teamArr}
+                        getUserTeam={this.getUserTeam}
+                    />
+                    : <TeamListScreen
+                        data={tableData}
+                        errMessage={errMessage}
+                        onRefresh={() => this.onRefresh()}
+                        refresh={refresh}
+                        search={search}
+                        navigation={this.props.navigation}
+                        teamArr={teamArr}
+                        searchEmpResult={data}
+                        searchDepResult={searchDepResult}
+                        getUserTeam={this.getUserTeam} />}
             </SafeAreaView>
         );
     }
@@ -164,11 +201,11 @@ const styles = StyleSheet.create({
         // position: 'absolute',
         // right: 0,
         // padding: 10
-        marginHorizontal:10
+        marginHorizontal: 10
     },
     inputWrapper: {
-        margin: 7,
-        marginLeft: 0,
+        margin: 10,
+        // marginHorizontal: 0,
         borderRadius: 10,
         borderColor: colors.blue,
         borderWidth: 1,
@@ -177,7 +214,7 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         padding: 5,
-        marginRight: 40
+        marginRight: 40,
     },
     icon: {
         position: 'absolute',

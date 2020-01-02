@@ -3,51 +3,52 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native
 
 import Icon from 'react-native-vector-icons/dist/Feather';
 import { colors, dimensions } from '../styles'
+import UserItem from '../components/UserItem'
 export default class TeamListScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            memberTeam:[]
         };
     }
-    getUserTeam = (team) => {
-        const { data } = this.props;
-        let result = data
-        if (team !== "All") {
-            result = data.filter(element => element[3] === team);
-        }
 
-        this.setState({ memberTeam: result})
-    }
     render() {
-        const { teamArr, getUserTeam, searchDepResult, search, refresh, onRefresh, errMessage } = this.props;
-        let data = teamArr;
-        if (search != "") {
-            data = searchDepResult;
-        }
+        const { teamArr, getUserTeam, search, refresh, onRefresh, errMessage, navigation, searchEmpResult } = this.props;
         return (
             <View style={{ flex: 1 }}>
-                {data.length === 0 && search != "" ? <Text style={styles.errMessage}>"{search}" not found</Text> : null}
+                {searchEmpResult.length === 0 && search != "" ? <Text style={styles.errMessage}>"{search}" not found</Text> : null}
                 {errMessage != "" ? <Text style={styles.errMessage}>{errMessage}</Text> : null}
-                <FlatList style={{ margin: 10 }}
-                    refreshing={refresh}
-                    onRefresh={onRefresh}
-                    data={data}
-                    renderItem={({ item }) =>
-                        <TouchableOpacity
-                            onPress={() => this.getUserTeam(item.name)}
-                            style={styles.teamWrapper}
-                        >
-                            <Icon name="users" color={colors.blue} size={30} />
-                            <Text style={{}}>Total: {item.total}</Text>
-                            <View style={styles.txtWrapper}>
-                                <Text style={{ color: colors.white }}>{item.name}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    }
-                    numColumns={2}
-                    keyExtractor={(item, index) => index.toString()}
-                />
+                {search != "" ?
+                    <FlatList
+                        refreshing={refresh}
+                        onRefresh={onRefresh}
+                        data={searchEmpResult}
+                        renderItem={({ item }) =>
+                            <UserItem item={item} navigation={navigation} />
+                        }
+                        keyExtractor={(item, index) => index.toString()}
+                        key={"searchResult"}
+                    /> :
+                    <FlatList style={{ margin: 10 }}
+                        key={"tempData"}
+                        refreshing={refresh}
+                        onRefresh={onRefresh}
+                        data={teamArr}
+                        renderItem={({ item }) =>
+                            <TouchableOpacity
+                                onPress={() => getUserTeam(item.name)}
+                                style={styles.teamWrapper}
+                            >
+                                <Icon name="users" color={colors.blue} size={30} />
+                                <Text style={{}}>Total: {item.total}</Text>
+                                <View style={styles.txtWrapper}>
+                                    <Text style={{ color: colors.white }}>{item.name}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        }
+                        numColumns={2}
+                        keyExtractor={(item, index) => index.toString()}
+                    />}
+
             </View>
         );
     }
