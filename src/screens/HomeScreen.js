@@ -126,24 +126,27 @@ class HomeScreen extends Component {
                             </TouchableOpacity>
                         </View>
                     </View> :
-                        <View style={{ padding: 17, justifyContent:'center',   }}>
-                            <Text onPress={() => this.focus()} style={{ fontSize:15, color:colors.white, fontWeight:'700'}}>SEARCH</Text>
-                            <Icon style={styles.btnSignOut} name="log-out" size={22} color={colors.burntOrange} onPress={() => this.props.signOut()} />
+                        <View style={{ padding: 17, justifyContent: 'space-between', flexDirection: 'row' }}>
+                            <Text  style={{ fontSize: 15, color: colors.white, fontWeight: '700' }}>VXR Contact List</Text>
+                            <View style={{flexDirection:'row'}}>
+                                <Icon style={styles.btnSignOut} name="search" size={22} color={colors.white} onPress={() => this.focus()} />
+                                <Icon style={styles.btnSignOut} name="log-out" size={22} color={colors.white} onPress={() => this.props.signOut()} />
+                            </View>
                         </View>
                     }
                 </View>
                 <View style={{ flexDirection: 'row', marginHorizontal: 10, marginBottom: 10 }}>
-                    <TouchableOpacity onPress={() => this.setState({ userListTab: !userListTab })} style={[styles.tab, !userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
-                        <Text style={!userListTab ? styles.activeText : {}}>Department</Text>
+                    <TouchableOpacity onPress={() => this.setState({ userListTab: false })} style={[styles.tab, !userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
+                        <Text style={!userListTab ? styles.activeText : {}}>Department ({teamArr.length})</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ userListTab: !userListTab })} style={[styles.tab, userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
-                        <Text style={userListTab ? styles.activeText : {}}>Employee</Text>
+                    <TouchableOpacity onPress={() => this.setState({ userListTab: true }, () => this.getUserTeam('All'))} style={[styles.tab, userListTab ? { borderBottomColor: colors.burntOrange, } : {}]}>
+                        <Text style={userListTab ? styles.activeText : {}}>Employee ({userType != "All" ? data.length : tableData.length})</Text>
                     </TouchableOpacity>
                 </View>
                 {userListTab ? <UserListScreen onRefresh={() => this.onRefresh()} refresh={refresh} search={search} errMessage={errMessage} data={data} navigation={this.props.navigation} userType={userType} teamArr={teamArr}
                     getUserTeam={this.getUserTeam}
                 />
-                    : <TeamListScreen errMessage={errMessage} onRefresh={() => this.onRefresh()} refresh={refresh} search={search} teamArr={teamArr} searchDepResult={searchDepResult} getUserTeam={this.getUserTeam} />}
+                    : <TeamListScreen data={tableData} errMessage={errMessage} onRefresh={() => this.onRefresh()} refresh={refresh} search={search} teamArr={teamArr} searchDepResult={searchDepResult} getUserTeam={this.getUserTeam} />}
             </SafeAreaView>
         );
     }
@@ -158,9 +161,10 @@ export default connect(mapStateToProps, loginAction)(HomeScreen);
 
 const styles = StyleSheet.create({
     btnSignOut: {
-        position: 'absolute',
-        right: 0,
-        padding: 10
+        // position: 'absolute',
+        // right: 0,
+        // padding: 10
+        marginHorizontal:10
     },
     inputWrapper: {
         margin: 7,

@@ -7,9 +7,18 @@ export default class TeamListScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            memberTeam:[]
         };
     }
+    getUserTeam = (team) => {
+        const { data } = this.props;
+        let result = data
+        if (team !== "All") {
+            result = data.filter(element => element[3] === team);
+        }
 
+        this.setState({ memberTeam: result})
+    }
     render() {
         const { teamArr, getUserTeam, searchDepResult, search, refresh, onRefresh, errMessage } = this.props;
         let data = teamArr;
@@ -26,7 +35,7 @@ export default class TeamListScreen extends Component {
                     data={data}
                     renderItem={({ item }) =>
                         <TouchableOpacity
-                            onPress={() => getUserTeam(item.name)}
+                            onPress={() => this.getUserTeam(item.name)}
                             style={styles.teamWrapper}
                         >
                             <Icon name="users" color={colors.blue} size={30} />

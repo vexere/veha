@@ -60,7 +60,7 @@ export default class UserDetailScreen extends Component {
                                 <Icon name="phone-call" color={colors.burntOrange} size={27} />
                             </TouchableOpacity>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                        <View style={{ flexDirection: 'row', marginTop: 20, marginHorizontal:10 }}>
                             <View style={{ flex: 2 }}>
                                 <Text style={styles.textHead}>Department: </Text>
                                 <Text style={styles.textHead}>FullName: </Text>
