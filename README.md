@@ -7,12 +7,18 @@ At VeXeRe, we feel thankful because of the giving spirit of the open source comm
 # Brief 
 An HR app, app for employee that aims to boost employee happiness, but without being a standard HR functional mobile application.
 
-![Main screen] (docs/images/main-screen.jpg)
-
-![Search screen] (docs/images/search-screen.jpg)
-
-![Department view screen] (docs/images/department-view-screen.jpg)
-
+<table style="width:100%">
+  <tr>
+    <th>Main screen</th>
+    <th>Search screen</th>
+    <th>Department view screen</th>
+  </tr>
+  <tr>
+    <td><img src="docs/images/main-screen.jpg" /></td>
+    <td><img src="docs/images/search-screen.jpg" /></td>
+    <td><img src="docs/images/department-view-screen.jpg"/></td>
+  </tr>
+</table>
 
 # Roadmap
 
