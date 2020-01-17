@@ -29,3 +29,9 @@ Phase 1
 
 Phase 2
 * Push notification for HR to broadcast information to all employees
+
+# Author
+Long Luong (longbkit@gmail.com) - CTO @ VeXeRe
+Coordinator: Hieu Le
+
+# License
