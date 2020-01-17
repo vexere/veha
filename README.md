@@ -29,6 +29,14 @@ Phase 1
 
 Phase 2
 * Push notification for HR to broadcast information to all employees
+* Admin web interface to send and manage push notifications (how many people read the message, who not read the message, remind ...)
+
+Phase 3
+* User profile with point,ranking, give points, profile, skills
+
+Phase 4
+* Happiness scoring and boosting
+
 
 # Author
 Long Luong (longbkit@gmail.com) - CTO @ VeXeRe
