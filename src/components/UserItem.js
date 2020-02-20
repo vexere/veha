@@ -45,7 +45,6 @@ export default class UserItem extends Component {
             <Icon name="mail" color={colors.blue} size={15} /> {item[8]}
           </Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={() => navigation.navigate('UserDetail', { info: item })}> */}
         <TouchableOpacity
           onPress={() => this.handleCall(item[7])}
           style={{flex: 1, alignItems: 'center'}}>

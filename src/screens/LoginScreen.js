@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, SafeAreaView, Image, StatusBar} from 'react-native';
+import {Text, SafeAreaView, Image, StatusBar, StyleSheet} from 'react-native';
 import {GoogleSigninButton} from '@react-native-community/google-signin';
 import * as action from '../actions';
 import {colors} from '../styles';
@@ -8,14 +8,7 @@ import {connect} from 'react-redux';
 class LoginScreen extends Component {
   render() {
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          backgroundColor: colors.white,
-          alignContent: 'center',
-          alignItems: 'center',
-        }}>
+      <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={colors.blue} barStyle="light-content" />
         <Image source={require('../images/logo.png')} />
         <Text style={{padding: 20}}> Login with Google to continue </Text>
@@ -35,3 +28,13 @@ export default connect(
   mapStateToProps,
   action,
 )(LoginScreen);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: colors.white,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+});

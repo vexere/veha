@@ -15,9 +15,7 @@ import TeamListScreen from './TeamListScreen';
 import {connect} from 'react-redux';
 import * as loginAction from '../actions';
 
-const SheetID = '1i-0Tq2Bc5lzJqoizxMeBA95dgQDSkmHLXt6eWLv94Cc';
-const API_KEY = 'AIzaSyDMzmnG1bYziDhPlTZCUJZWcV0mSzpwX-c';
-const SheetName = 'Danh%20Sách';
+import {SheetID, API_KEY, SheetName} from '../constants';
 
 class HomeScreen extends Component {
   _isMounted = false;
@@ -90,9 +88,9 @@ class HomeScreen extends Component {
   onSearch = text => {
     const {tableData, userListTab, userType} = this.state;
     this.setState({search: text});
-    var search = new RegExp(text, 'i'); // prepare a regex object
-    let resultByName = tableData.filter(item => search.test(item[4]));
-    let resultByEmail = tableData.filter(item => search.test(item[8]));
+    const search = new RegExp(text, 'i'); // prepare a regex object
+    const resultByName = tableData.filter(item => search.test(item[4]));
+    const resultByEmail = tableData.filter(item => search.test(item[8]));
     let result = [...new Set([...resultByName, ...resultByEmail])];
 
     if (userListTab) {
@@ -124,9 +122,9 @@ class HomeScreen extends Component {
     //     result = tableData.filter(element => element[3] === team);
     // }
     if (search !== '') {
-      var searchText = new RegExp(search, 'i'); // prepare a regex object
-      let resultByName = result.filter(item => searchText.test(item[4]));
-      let resultByEmail = result.filter(item => searchText.test(item[8]));
+      const searchText = new RegExp(search, 'i'); // prepare a regex object
+      const resultByName = result.filter(item => searchText.test(item[4]));
+      const resultByEmail = result.filter(item => searchText.test(item[8]));
       result = [...new Set([...resultByName, ...resultByEmail])];
     }
 
