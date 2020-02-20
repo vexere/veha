@@ -1,10 +1,13 @@
-import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import Configs from 'react-native-config'
+
 GoogleSignin.configure({
     // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-    webClientId: '786177498507-js69bv21uitfgvnc6ba5l9p7gm15i6tg.apps.googleusercontent.com',
+    webClientId: Configs.WEB_CLIENT_ID,
     offlineAccess: false,
 });
-export function signIn() {
+
+export const signIn = () => {
     return async (dispatch) => {
         try {
             await GoogleSignin.hasPlayServices();
@@ -18,19 +21,18 @@ export function signIn() {
         }
     }
 }
-export function signOut() {
+export const signOut = () => {
     return async (dispatch) => {
         try {
             await GoogleSignin.revokeAccess();
             await GoogleSignin.signOut();
             dispatch(receiveLogout());
         } catch (exception) {
-            
             console.log(exception)
         }
     }
 }
-export function checkLogin() {
+export const checkLogin = () => {
     return async (dispatch) => {
         try {
             const userInfo = await GoogleSignin.signInSilently();
@@ -39,19 +41,19 @@ export function checkLogin() {
             }else{
                 dispatch(receiveLogout());
             }
-            
         } catch (error) {
             dispatch(receiveLogout());
             console.log(error)
         }
     }
 }
-function receiveLogout() {
+
+const receiveLogout = () => {
     return {
         type: 'SIGN_OUT'
     }
 }
-function signInSuccess(user) {
+const signInSuccess = user => {
     return {
         type: 'SIGN_IN_SUCCESS',
         user: user
