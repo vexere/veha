@@ -1,20 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View, Text, TouchableOpacity,
     StyleSheet, Platform, Linking
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Feather';
 import { colors } from '../styles'
-import Loading from '../components/Loading'
-import { connect } from 'react-redux';
 
-export default class UserItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        };
-    }
-    handleCall = (phoneNumber) => {
+const UserItem = ({ item, navigation }) => {
+    const handleCall = phoneNumber => {
         if (Platform.OS !== 'android') {
             phoneNumber = `telprompt:${phoneNumber}`;
         }
@@ -30,24 +23,24 @@ export default class UserItem extends Component {
                 }
             })
     }
-    render() {
-        const { item, navigation } = this.props
-        return (
-            <View style={styles.itemWrapper} >
-                <TouchableOpacity style={styles.detail} onPress={() => navigation.navigate('UserDetail', { info: item })}>
-                    <Text style={styles.textLarge}>{item[3]}</Text>
-                    <Text>{item[4]}</Text>
-                    <Text ><Icon name="phone" color={colors.blue} size={15} />  {item[7]}</Text>
-                    <Text><Icon name="mail" color={colors.blue} size={15} />  {item[8]}</Text>
-                </TouchableOpacity>
-                {/* <TouchableOpacity onPress={() => navigation.navigate('UserDetail', { info: item })}> */}
-                <TouchableOpacity onPress={() => this.handleCall(item[7])} style={{ flex: 1, alignItems: 'center', }}>
-                    <Icon name="phone-call" color={colors.blue} size={30} />
-                </TouchableOpacity>
-            </View>
-        );
-    }
+
+    return (
+        <View style={styles.itemWrapper} >
+            <TouchableOpacity style={styles.detail} onPress={() => navigation.navigate('UserDetail', { info: item })}>
+                <Text style={styles.textLarge}>{item[3]}</Text>
+                <Text>{item[4]}</Text>
+                <Text ><Icon name="phone" color={colors.blue} size={15} />  {item[7]}</Text>
+                <Text><Icon name="mail" color={colors.blue} size={15} />  {item[8]}</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('UserDetail', { info: item })}> */}
+            <TouchableOpacity onPress={() => handleCall(item[7])} style={{ flex: 1, alignItems: 'center', }}>
+                <Icon name="phone-call" color={colors.blue} size={30} />
+            </TouchableOpacity>
+        </View>
+    );
 }
+
+export default UserItem;
 
 const styles = StyleSheet.create({
     headerWrapper: {

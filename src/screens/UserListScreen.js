@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import {
-    View, Text, TouchableOpacity,
-    StyleSheet, TextInput, SafeAreaView, FlatList, Picker
+    View, Text, Picker, FlatList,
+    StyleSheet
 } from 'react-native';
-import Icon from 'react-native-vector-icons/dist/Feather';
 import { colors, dimensions } from '../styles'
 import UserItem from '../components/UserItem'
 import { connect } from 'react-redux';
 import * as loginAction from '../actions'
-const SheetID = "1i-0Tq2Bc5lzJqoizxMeBA95dgQDSkmHLXt6eWLv94Cc";
-const API_KEY = "AIzaSyDMzmnG1bYziDhPlTZCUJZWcV0mSzpwX-c";
-const SheetName = "Danh%20Sách"
+
 class UserListScreen extends Component {
     constructor(props) {
         super(props);

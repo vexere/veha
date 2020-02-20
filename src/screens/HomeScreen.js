@@ -4,7 +4,7 @@ import {
     StyleSheet, TextInput, SafeAreaView, StatusBar, Keyboard
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Feather';
-import { colors, dimensions } from '../styles'
+import { colors } from '../styles'
 import UserListScreen from './UserListScreen'
 import TeamListScreen from './TeamListScreen'
 import { connect } from 'react-redux';

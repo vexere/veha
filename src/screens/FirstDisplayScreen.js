@@ -1,44 +1,27 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
 import * as loginAction from '../actions'
-import Main, {LoggedIn} from '../navigators'
-import { View, Text } from 'react-native';
+import Main, { LoggedIn } from '../navigators'
 import Loading from '../components/Loading'
-class FirstDisplayScreen extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            signedIn: false,
-            checkedSignIn: false
-        };
-    }
-    componentDidMount() {
-        this.props.checkLogin();
-    }
-
-    render() {
-        const { isAuthenticated, user } = this.props;
-
-        if (isAuthenticated === null) {
+const FirstDisplayScreen = ({ isAuthenticated, user }) => {
+    if (isAuthenticated === null) {
+        return (
+            <Loading />
+        );
+    } else if (isAuthenticated && user !== null ) {
+        if (user === null ) {
             return (
                 <Loading />
-            );
-        } else if (isAuthenticated && user !== null ) {
-            if (user === null ) {
-                return (
-                    <Loading />
 
-                );
-            }
-            else {
-                return (
-                    <LoggedIn />
-                );
-            }
-        } else {
-            return <Main />
+            );
         }
+        else {
+            return (
+                <LoggedIn />
+            );
+        }
+    } else {
+        return <Main />
     }
 }
 const mapStateToProps = (state) => {

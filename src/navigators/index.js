@@ -1,7 +1,6 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import LoginScreen from '../screens/LoginScreen'
-import UserListScreen from '../screens/UserListScreen'
 import HomeScreen from '../screens/HomeScreen'
 import UserDetailScreen from '../screens/UserDetailScreen'
 
@@ -18,7 +17,7 @@ export const LoggedIn =createAppContainer(Logged)
 export const Main = createSwitchNavigator({
     Login: { screen: LoginScreen },
     logged: Logged,
-},
+    },
     {
         headerMode: 'none',
         initialRouteName: 'Login',
