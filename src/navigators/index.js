@@ -1,29 +1,32 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import LoginScreen from '../screens/LoginScreen'
-import UserListScreen from '../screens/UserListScreen'
-import HomeScreen from '../screens/HomeScreen'
-import UserDetailScreen from '../screens/UserDetailScreen'
+import SplashScreen from '../screens/SplashScreen'
+import getSlideFromRightTransitionConfig from './transitionConfig'
+import { AppDrawerNavigator } from './drawers'
 
-export const Logged = createStackNavigator({
-    Home: { screen: HomeScreen },
-    UserDetail: { screen: UserDetailScreen },
-},
-    {
-        headerMode: 'none',
-        initialRouteName: 'Home',
+export const LoggedIn = createAppContainer(AppDrawerNavigator)
+
+export const RouteNavigate = createStackNavigator({
+  Splash: {
+    screen: SplashScreen,
+    navigationOptions: {
+      gesturesEnabled: false,
     }
-);
-export const LoggedIn =createAppContainer(Logged)
-export const Main = createSwitchNavigator({
-    Login: { screen: LoginScreen },
-    logged: Logged,
-},
-    {
-        headerMode: 'none',
-        initialRouteName: 'Login',
+  },
+  Main: {
+    screen: AppDrawerNavigator,
+    navigationOptions: {
+      gesturesEnabled: false,
     }
-);
+  },
+  Login: { screen: LoginScreen },
+}, {
+  initialRouteName: 'Splash',
+  headerMode: 'none',
+  mode: 'modal',
+  transitionConfig: getSlideFromRightTransitionConfig,
+});
 
 
-export default createAppContainer(Main);
+export default createAppContainer(RouteNavigate);
